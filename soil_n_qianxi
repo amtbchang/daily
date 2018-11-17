@@ -1,0 +1,62 @@
+#导入区域数据
+import os
+from pylab import *
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+import matplotlib.dates as mdates
+import matplotlib.gridspec as gridspec
+
+#file path in windows
+path = r'G:\china_geodata\yunnan_region\yn_all_1.csv'
+data = pd.read_csv(path,encoding='gb2312')
+
+
+plt.style.use('ggplot')
+n = 7
+d=4
+data.date = pd.to_datetime(data.date)
+x = np.array([i for i in range(13)])
+y = data[data.columns[1:29]]
+
+name = ['CK', 'FP', 'M', 'RMN', 'MFP', 'SFP', 'RN']
+rc('font', family='serif', serif='Times New Roman', size = 24) 
+cols = 4
+ax = []
+gs = gridspec.GridSpec(7//cols +1 , cols)
+gs.update(hspace=0.2)
+fig1 = plt.figure(figsize=(36, 15))
+xfmt = mdates.DateFormatter('%Y/%m/%d')
+
+for i in range(7):
+    row = (i // cols)
+    col = i % cols
+    ax.append(fig1.add_subplot(gs[row, col]))
+    plt.errorbar(data.date,data[data.columns[1+i*d]],yerr=data[data.columns[2+i*d]],fmt='o',color = 'r',ecolor='k',elinewidth=1.2,capsize=4, ms=4)
+    plt.errorbar(data.date,data[data.columns[3+i*d]],yerr=data[data.columns[4+i*d]],fmt='o',color = 'b',ecolor='k',elinewidth=1.2,capsize=4,ms=4)
+    
+    plt.legend(('NO$_3 ^{ -1}$','NH$_4 ^{ +1}$'),edgecolor=None)
+    plt.plot_date(data.date,data[data.columns[1+i*d]],fmt='o',c='r', ms=4)
+    plt.plot_date(data.date,data[data.columns[3+i*d]],fmt='o',c='b', ms=4)
+    xfmt = mdates.DateFormatter('%m/%d')
+
+    
+    #plt.xticks(pd.date_range('2012-03-01','2012-09-30'))
+    plt.ylim((0, 500))
+    plt.xlim(('2012/03/01','2012/09/15'))
+    
+    plt.arrow('2012/5/15',450,0,-80,head_width=4, ls='--',head_length=4, fc='k', ec='k')
+    plt.arrow('2012/7/01',450,0,-80,head_width=4, ls='--',head_length=4, fc='k', ec='k')
+    plt.text('2012/3/12', 460, s='abcdefg'[i])
+    #plt.title(x, )
+    
+    plt.ylabel('Soil mineral N (mg/kg )')
+    plt.gca().xaxis.set_major_formatter(xfmt)
+
+
+        
+     
+    plt.xlabel('Date(month/day)')
+plt.savefig(r'F:\迁西试验\12-16汇总\py\soil_n1.tif')
+plt.show()
