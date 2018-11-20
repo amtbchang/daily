@@ -12,3 +12,13 @@ for temp in filename:
     print(new_name)
     chdir(os.path.dirname(datadir))
     os.rename(datadir+os.sep+temp,datadir+os.sep+new_name+".tif")
+#move file
+'''output= r"G:\zunyi_data\gpp\ori\PsnNet"
+if not os.path.exists(output):
+    os.mkdir(output)
+import shutil
+filename = os.listdir('G:\zunyi_data\gpp')
+for temp in filename:
+    if temp.endswith('PsnNet.tif'):
+        print(temp)
+        shutil.move('G:\zunyi_data\gpp'+os.sep+temp,output+os.sep+temp)   '''
