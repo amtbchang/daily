@@ -1,0 +1,11 @@
+from matplotlib import rc
+
+rc('front', **{'family':'sans-serif', 'sans-serif':['Arial'], 'size':8}) 
+paras = {'text.usetext':False, 'mathtext.fontset':'stixsans'}##
+plt.rcParams.update(params)##  字体与字体大小
+
+fig, ax = plt.subplots(num=1, figsize=(3.54, 2.26))##图片大小
+
+plt.subplots_adjust(right=0.99, left=0.125, bottom=0.14, top=0.975##消除白边
+
+ax.spines["right"].set_visible(False)##轴线去掉
