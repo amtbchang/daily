@@ -1,6 +1,6 @@
 from matplotlib import rc
 
-rc('front', **{'family':'sans-serif', 'sans-serif':['Arial'], 'size':8}) 
+rc('font', **{'family':'sans-serif', 'sans-serif':['Arial'], 'size':8}) 
 paras = {'text.usetext':False, 'mathtext.fontset':'stixsans'}##
 plt.rcParams.update(params)##  字体与字体大小
 
