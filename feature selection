@@ -1,0 +1,70 @@
+from sklearn.linear_model import (LinearRegression, Ridge, 
+                                  Lasso, RandomizedLasso)
+from sklearn.feature_selection import RFE, f_regression
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.ensemble import RandomForestRegressor
+import numpy as np
+
+np.random.seed(0)
+ 
+size = 750
+X= np.array(data[data.columns[list(range(28)[2:27])]])
+
+Y = data['Cum_N2O']
+ 
+names = ['MAP', 'MAT', 'Sand', 'Clay', 'Silt', 'C_content', 'N_content', 'pH',
+        'BD', 'Drainage', 'Residues_inco.', 'N_as_residues', 'Tilliage',
+        'Irrigation', 'Fert1', 'Fert2', 'Fert3', 'Mode', 'Splits', 'Duration',
+        'N rate', 'Crop_Maize', 'Crop_Rice', 'Crop_Wheat', 'Crop_wheat_maize']
+
+#names = [data.columns[list(range(28)[2:27])]]
+ranks ={}
+ 
+def rank_to_dict(ranks, names, order=1):
+    minmax = MinMaxScaler()
+    ranks = minmax.fit_transform(order*np.array([ranks]).T).T[0]
+    ranks = map(lambda x: round(x, 2), ranks)
+    return dict(zip(names, ranks ))
+ 
+lr = LinearRegression(normalize=True)
+lr.fit(X, Y)
+ranks["Linear"] = rank_to_dict(np.abs(lr.coef_), names)
+ 
+ridge = Ridge(alpha=7)
+ridge.fit(X, Y)
+ranks["Ridge"] = rank_to_dict(np.abs(ridge.coef_), names)
+ 
+lasso = Lasso(alpha=.001)
+lasso.fit(X, Y)
+ranks["Lasso"] = rank_to_dict(np.abs(lasso.coef_), names)
+ 
+rlasso = RandomizedLasso(alpha=0.01)
+rlasso.fit(X, Y)
+ranks["Stability"] = rank_to_dict(np.abs(rlasso.scores_), names)
+ 
+#stop the search when 5 features are left (they will get equal scores)
+rfe = RFE(lr, n_features_to_select=5)
+rfe.fit(X,Y)
+ranks["RFE"] = rank_to_dict(rfe.ranking_, names, order=-1)
+ 
+rf = RandomForestRegressor()
+rf.fit(X,Y)
+ranks["RF"] = rank_to_dict(rf.feature_importances_, names)
+ 
+f, pval  = f_regression(X, Y, center=True)
+ranks["Corr."] = rank_to_dict(f, names)
+ 
+ 
+ 
+r = {}
+for name in names:
+    r[name] = round(np.mean([ranks[method][name] 
+                             for method in ranks.keys()]), 2)
+methods = sorted(ranks.keys())
+ranks["Mean"] = r
+methods.append("Mean")
+ 
+print("\t%s" % "\t".join(methods))
+for name in names:
+    print("%s\t%s" % (name, "\t".join(map(str, 
+                         [ranks[method][name] for method in methods]))))
