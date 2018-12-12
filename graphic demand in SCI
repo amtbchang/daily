@@ -13,3 +13,7 @@ ax.spines["right"].set_visible(False)##轴线去掉
 #单栏图, 一般由一个或多个小图构成，插图总宽度一般为 8~9 cm ，插图左右留白须适度，尽量少留白，SCI期刊对于插图高度的限制较为宽松，但一般不超过 24 cm 。
 #1.5栏图, 一般由一个或多个小图构成，插图总宽度一般为 11.4~14 cm，插图左右留白须适度，尽量少留白，同样，高度一般不超过 24 cm 。
 #双栏图, 一般由一个或多个小图构成，插图总宽度一般为 17.1~19 cm，插图左右留白须适度，尽量少留白，同样，高度一般不超过 24 cm 
+plt.subplots_adjust(wspace =0, hspace =0)#调整子图间距
+
+leg= plt.legend(frameon=False,loc=1)
+leg.get_frame().set_linewidth(0.0)#调节图例位置，颜色，框线
