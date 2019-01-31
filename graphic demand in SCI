@@ -20,3 +20,4 @@ leg.get_frame().set_linewidth(0.0)#调节图例位置，颜色，框线
 lt.savefig('image_name', ,bbox_inches='tight')#保存图片更紧凑
 #####axs[i].xaxis.set_ticks_position('top')#设置坐标轴显示位置
 ax.spines['left'].set_position(('data',0))##左轴的位置
+plt.text(12500, 3200,'  ',bbox={'facecolor':'None', 'linestyle':'--', 'pad':10})#虚线框
