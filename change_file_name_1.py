@@ -22,3 +22,15 @@ for temp in filename:
     if temp.endswith('PsnNet.tif'):
         print(temp)
         shutil.move('G:\zunyi_data\gpp'+os.sep+temp,output+os.sep+temp)   '''
+
+########################################
+##更改文件所在文件夹
+import os 
+import sys
+import shutil
+
+path = r'I:\future_clim\tasmin'
+os.chdir(path)
+for i in os.listdir():
+    if 'rcp45' in i:
+        shutil.move(i, r'I:\future_clim\tasmin\4.5')
